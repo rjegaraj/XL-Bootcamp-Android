@@ -34,8 +34,6 @@ public class TwitterFeedActivity extends ListActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         new MyTask().execute();
-        Handler handler1 = new Handler();
-        Timer t1 = new Timer();
     }
       private class MyTask extends AsyncTask<Void, Void, Void> {
               private ProgressDialog progressDialog;

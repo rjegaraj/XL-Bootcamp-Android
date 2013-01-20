@@ -60,7 +60,6 @@ public class TwitterFeedActivity extends ListActivity {
                                                tweet.author = session.getString("from_user");
                                                tweet.creationdate = session.getString("created_at");
                                                tweet.profileimage = session.getString("profile_image_url");
-                                               tweet.pic = downloadImage(tweet.profileimage);
                                                tweets.add(tweet);
                                       }
                              }
@@ -75,18 +74,6 @@ public class TwitterFeedActivity extends ListActivity {
                 setListAdapter(new TweetListAdaptor(
                                 TwitterFeedActivity.this, R.layout.list_item, tweets));
          }
-        
-        protected Bitmap downloadImage(String imageURLString) {
-            try {
-                String replaced = imageURLString.replaceAll("\\/", "/");
-                URL imageURL = new URL(replaced);
-
-                return BitmapFactory.decodeStream(imageURL.openConnection().getInputStream());
-
-            } catch (Exception e) {
-            }
-            return null;
-        }
 }
     private class TweetListAdaptor extends ArrayAdapter<Tweet> {
             private ArrayList<Tweet> tweets;
@@ -99,6 +86,7 @@ public class TwitterFeedActivity extends ListActivity {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                     View v = convertView;
+                	DownloadImageTask downloadImageTask = new DownloadImageTask(v);
                     if (v == null) {
                             LayoutInflater vi = (LayoutInflater)
                             getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -107,12 +95,45 @@ public class TwitterFeedActivity extends ListActivity {
                     Tweet finaltweet = tweets.get(position);
                     TextView tt = (TextView) v.findViewById(R.id.toptext);
                     TextView bt = (TextView) v.findViewById(R.id.bottomtext);
-                    ImageView image = (ImageView) v.findViewById(R.id.profileimage);
+                    //ImageView image = (ImageView) v.findViewById(R.id.profileimage);
+                    new DownloadImageTask(v).execute(finaltweet.profileimage);
                     tt.setText(finaltweet.content);
                     bt.setText(finaltweet.author + "    " + finaltweet.creationdate);
-                    image.setImageBitmap(finaltweet.pic);                   
                     return v;
             }
-                       
+                
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+    	DownloadImageTask(View v){
+    		super();
+    		x = v;
+  
+    	}
+    	
+    	View x;
+    	
+    	
+        protected void onPreExecute() {  }
+        @Override
+        protected Bitmap doInBackground(String... arg0) {
+        	String imageURLString = arg0[0];
+                try {
+                    String replaced = imageURLString.replaceAll("\\/", "/");
+                    URL imageURL = new URL(replaced);
+
+                    return BitmapFactory.decodeStream(imageURL.openConnection().getInputStream());
+
+                } catch (Exception e) {
+                }
+                return null;
+            
     }
+    
+  @Override
+  protected void onPostExecute(Bitmap result) {
+      ImageView image = (ImageView) x.findViewById(R.id.profileimage);
+      image.setImageBitmap(result);                   
+   }
+  
 }
+    }}

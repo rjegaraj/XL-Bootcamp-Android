@@ -2,8 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" 
 android:layout_height="fill_parent" android:layout_width="fill_parent" android:id="@+id/relativeLayout">
 <ImageView android:id="@+id/profileimage"
-      		 android:layout_height="wrap_content"
-      		 android:layout_width="wrap_content"
+      		 android:layout_height="70dp"
+      		 android:layout_width="70dp"
 />
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
   android:orientation="vertical"
@@ -14,9 +14,10 @@ android:layout_height="fill_parent" android:layout_width="fill_parent" android:i
   <TextView android:id="@+id/toptext" android:layout_width="fill_parent"
       android:layout_height="wrap_content"
       android:gravity="center_vertical" android:singleLine="true" 
-      android:paddingLeft="35px"/>
+      android:paddingLeft="130px"/>
   <TextView android:layout_width="fill_parent"
       android:layout_height="wrap_content"  android:id="@+id/bottomtext"
-      android:singleLine="true" />
+      android:singleLine="true" 
+      android:paddingLeft="130px"/>
 </LinearLayout>
 </RelativeLayout>
